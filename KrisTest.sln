@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Application", "Kri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Infrastructure", "KrisTest.Infrastructure\KrisTest.Infrastructure.csproj", "{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "KrisTest.MVC", "KrisTest.MVC\KrisTest.MVC.fsproj", "{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "KrisTest.UI", "KrisTest.MVC\KrisTest.UI.fsproj", "{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
