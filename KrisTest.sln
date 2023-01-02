@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTest.API", "KrisTest.API\KrisTest.API.csproj", "{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.API", "KrisTest.API\KrisTest.API.csproj", "{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTest.Domain", "KrisTest.Domain\KrisTest.Domain.csproj", "{2D25963B-DAE5-490F-B0DC-A24AFF336A69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Domain", "KrisTest.Domain\KrisTest.Domain.csproj", "{2D25963B-DAE5-490F-B0DC-A24AFF336A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTest.Application", "KrisTest.Application\KrisTest.Application.csproj", "{B70C43DA-4DE1-4632-B044-BACE821F800D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Application", "KrisTest.Application\KrisTest.Application.csproj", "{B70C43DA-4DE1-4632-B044-BACE821F800D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTest.Infrastructure", "KrisTest.Infrastructure\KrisTest.Infrastructure.csproj", "{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Infrastructure", "KrisTest.Infrastructure\KrisTest.Infrastructure.csproj", "{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "KrisTest.MVC", "KrisTest.MVC\KrisTest.MVC.fsproj", "{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
