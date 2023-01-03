@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Application", "Kri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Infrastructure", "KrisTest.Infrastructure\KrisTest.Infrastructure.csproj", "{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "KrisTest.UI", "KrisTest.MVC\KrisTest.UI.fsproj", "{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTest.UI", "KrisTest.UI\KrisTest.UI.csproj", "{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02F19B4C-B3B8-4586-B8C0-B2E0698E1A96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

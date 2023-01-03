@@ -1,20 +1,24 @@
-﻿using Microsoft.Graph;
+﻿using KrisTest.Domain.Common;
+using Microsoft.Graph;
 using Stripe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
-        public string id { get; set; }
-        public Address address { get; set; }
-        public Phone phone { get; set; }
-        public string email { get; set; }
+        public Address Address { get; set; }
+        public Phone Phone { get; set; }
+        public string Email { get; set; }
+        public virtual Account Account { get; set; }
+        public Nullable<int> WebUserId { get; set; }
+        public virtual WebUser User { get; set; }
 
     }
 }

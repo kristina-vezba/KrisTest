@@ -1,4 +1,5 @@
-﻿using Stripe;
+﻿using KrisTest.Domain.Common;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class LineItem
+    public class LineItem : BaseEntity
     {
-        public int quantity { get; set; }
-        public Price price { get; set; }
+        public int Quantity { get; set; }
+        public Price Price { get; set; }
         public Product Product { get; set; }
         public string ShoppigCartId { get; set; }
     }

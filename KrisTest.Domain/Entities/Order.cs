@@ -1,4 +1,5 @@
-﻿using KrisTest.Domain.Enums;
+﻿using KrisTest.Domain.Common;
+using KrisTest.Domain.Enums;
 using Stripe;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        public String number { get; set; }
-        public DateTime ordered { get; set; }
-        public DateTime shipped { get; set; }
-        public Address ship_to { get; set; }
-        public OrderStatus status { get; set; }
-        public decimal total { get; set; }
+        public string Number { get; set; }
+        public DateTime Ordered { get; set; }
+        public DateTime Shipped { get; set; }
+        public Address ShipTo { get; set; }
+        public OrderStatus Status { get; set; }
+        public double Total { get; set; }
         public Account Account { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using KrisTest.Domain.Enums;
+﻿using KrisTest.Domain.Common;
+using KrisTest.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class WebUser
+    public class WebUser : BaseEntity
     {
-        public int login_id { get; set; }
-        public string password { get; set; }
-        public UserState state { get; set; }
+        public string LoginId { get; set; }
+        public string Password { get; set; }
+        public UserState State { get; set; }
+        public Nullable<int> ShoppinCartId { get; set; }
+        public virtual ShoppingCart ShoppingCart { get; set; }
     }
 }

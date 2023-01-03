@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KrisTest.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class ShoppingCart
+    public class ShoppingCart : BaseEntity
     {
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
         public Account Account { get; set; }
+        public virtual WebUser User { get; set; }
     }
 }

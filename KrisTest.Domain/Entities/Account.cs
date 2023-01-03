@@ -1,4 +1,5 @@
-﻿using Stripe;
+﻿using KrisTest.Domain.Common;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class Account
+    public class Account : BaseEntity
     {
-        public string Id { get; set; }
-        public Address billing_address { get; set; }
-        public Boolean is_closed { get; set; }
-        public DateTime open { get; set; }
-        public DateTime closed { get; set; }
+        public string BillingAddress { get; set; }
+        public bool IsClosed { get; set; }
+        public DateTime Open { get; set; }
+        public DateTime Closed { get; set; }
         public Customer Customer { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

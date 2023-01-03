@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KrisTest.Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Entities
 {
-    public class Payment
+    public class Payment : BaseEntity
     {
-        public string Id { get; set; }
-        public DateTime paid { get; set; }
-        public decimal total { get; set; }
-        public string details { get; set; }
+        public DateTime Paid { get; set; }
+        public double Total { get; set; }
+        public string Details { get; set; }
+        public virtual Order Order { get; set; }
+
+        public Nullable<int> AccountId { get; set; }
+        public virtual Account Account { get; set; }
     }
 }
