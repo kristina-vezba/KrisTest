@@ -10,8 +10,8 @@ namespace KrisTest.Domain.Entities
     public class Product : BaseEntity
     {
         public string Name { get; set; }
-        public virtual ICollection<LineItem> LineItems { get; set; }
+        public ICollection<LineItem> LineItems { get; set; }
 
-        //public Supplier supplier { get; set; }
+        //public Supplier Supplier { get; set; }
     }
 }

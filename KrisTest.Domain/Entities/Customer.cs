@@ -16,9 +16,9 @@ namespace KrisTest.Domain.Entities
         public Address Address { get; set; }
         public Phone Phone { get; set; }
         public string Email { get; set; }
-        public virtual Account Account { get; set; }
+        public Account Account { get; set; }
         public Nullable<int> WebUserId { get; set; }
-        public virtual WebUser User { get; set; }
+        public WebUser User { get; set; }
 
     }
 }

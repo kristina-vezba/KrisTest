@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KrisTest.API\KrisTest.API.csproj" />
     <ProjectReference Include="..\KrisTest.Application\KrisTest.Application.csproj" />
   </ItemGroup>
 

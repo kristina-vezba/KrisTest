@@ -14,6 +14,6 @@ namespace KrisTest.Domain.Entities
         public string Password { get; set; }
         public UserState State { get; set; }
         public Nullable<int> ShoppinCartId { get; set; }
-        public virtual ShoppingCart ShoppingCart { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
     }
 }
