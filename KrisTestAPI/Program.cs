@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<KrisTestContext>(options => options.UseNpgsql(
-	"ConnectionStrings:KrisTestContextConnection", x => x.MigrationsAssembly("KrisTestContext")));
+builder.Services.AddDbContext<KrisTestContext>(options => options
+	.UseNpgsql(builder.Configuration.GetConnectionString("KrisTestContextConnection"))
+	.UseSnakeCaseNamingConvention()
+);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,8 +20,8 @@ using ( var scope = app.Services.CreateScope() )
 {
 	var db = scope.ServiceProvider.GetRequiredService<KrisTestContext>();
 	db.Database.EnsureCreated();
-	var a = db.Database.GetPendingMigrations;
-	if (a != null)
+	var migrationCount = db.Database.GetPendingMigrations;
+	if (migrationCount != null)
 	{
 		db.Database.Migrate();
 	}
