@@ -14,9 +14,11 @@ namespace KrisTest.Domain.Entities
         public string Number { get; set; }
         public DateTime Ordered { get; set; }
         public DateTime Shipped { get; set; }
-        public Address ShipTo { get; set; }
+        public string ShipToAddress { get; set; }
         public OrderStatus Status { get; set; }
         public double Total { get; set; }
         public Account Account { get; set; }
+        public ICollection<LineItem> LineItems { get; set; }
+        public ICollection<Payment> Payments { get; set; }
     }
 }

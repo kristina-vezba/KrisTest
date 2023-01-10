@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.API", "KrisTest.API\KrisTest.API.csproj", "{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Domain", "KrisTest.Domain\KrisTest.Domain.csproj", "{2D25963B-DAE5-490F-B0DC-A24AFF336A69}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Application", "KrisTest.Application\KrisTest.Application.csproj", "{B70C43DA-4DE1-4632-B044-BACE821F800D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.Infrastructure", "KrisTest.Infrastructure\KrisTest.Infrastructure.csproj", "{DF82142E-A831-43F9-B5DD-B8AF6BBA364D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTest.UI", "KrisTest.UI\KrisTest.UI.csproj", "{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KrisTest.UI", "KrisTest.UI\KrisTest.UI.csproj", "{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrisTestAPI", "KrisTestAPI\KrisTestAPI.csproj", "{478FD74E-3176-4B07-A051-80D5A776B70E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C7B17AC-EF92-405A-BD0C-ED6CAEC525E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D25963B-DAE5-490F-B0DC-A24AFF336A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D25963B-DAE5-490F-B0DC-A24AFF336A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D25963B-DAE5-490F-B0DC-A24AFF336A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{779E23B6-BCC4-489D-8FF3-6F80FEAABAA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{478FD74E-3176-4B07-A051-80D5A776B70E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{478FD74E-3176-4B07-A051-80D5A776B70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{478FD74E-3176-4B07-A051-80D5A776B70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{478FD74E-3176-4B07-A051-80D5A776B70E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

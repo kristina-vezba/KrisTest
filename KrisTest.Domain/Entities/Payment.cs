@@ -13,7 +13,6 @@ namespace KrisTest.Domain.Entities
         public double Total { get; set; }
         public string Details { get; set; }
         public Order Order { get; set; }
-        public Nullable<int> AccountId { get; set; }
         public Account Account { get; set; }
     }
 }

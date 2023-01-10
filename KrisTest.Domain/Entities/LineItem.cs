@@ -11,8 +11,9 @@ namespace KrisTest.Domain.Entities
     public class LineItem : BaseEntity
     {
         public int Quantity { get; set; }
-        public Price Price { get; set; }
+        public double Price { get; set; }
         public Product Product { get; set; }
-        public string ShoppigCartId { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
+        public Order Order { get; set; }
     }
 }

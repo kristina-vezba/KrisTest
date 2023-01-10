@@ -15,6 +15,8 @@ namespace KrisTest.Domain.Entities
         public DateTime Open { get; set; }
         public DateTime Closed { get; set; }
         public Customer Customer { get; set; }
-        public ICollection<Payment> Payments { get; set; }
+        public ICollection<Payment>? Payments { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

@@ -13,12 +13,11 @@ namespace KrisTest.Domain.Entities
 {
     public class Customer : BaseEntity
     {
-        public Address Address { get; set; }
-        public Phone Phone { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
         public string Email { get; set; }
         public Account Account { get; set; }
-        public Nullable<int> WebUserId { get; set; }
-        public WebUser User { get; set; }
+        public WebUser? WebUser { get; set; }
 
     }
 }

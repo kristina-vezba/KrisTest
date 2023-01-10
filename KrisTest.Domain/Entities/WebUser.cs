@@ -10,10 +10,10 @@ namespace KrisTest.Domain.Entities
 {
     public class WebUser : BaseEntity
     {
-        public string LoginId { get; set; }
+        public string Name { get; set; } = String.Empty;
         public string Password { get; set; }
         public UserState State { get; set; }
-        public Nullable<int> ShoppinCartId { get; set; }
-        public ShoppingCart ShoppingCart { get; set; }
+        public ShoppingCart? ShoppingCart { get; set; }
+        public Customer Customer { get; set; }
     }
 }

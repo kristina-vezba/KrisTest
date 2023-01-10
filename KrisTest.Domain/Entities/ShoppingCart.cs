@@ -11,6 +11,7 @@ namespace KrisTest.Domain.Entities
     {
         public DateTime Created { get; set; }
         public Account Account { get; set; }
-        public WebUser User { get; set; }
+        public WebUser WebUser { get; set; }
+        public ICollection<LineItem> LineItems { get; set; }
     }
 }
