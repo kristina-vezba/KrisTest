@@ -1,6 +1,7 @@
 ﻿using KrisTest.Domain.Common;
 using KrisTest.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Infrastructure.Data
 {
-	public class KrisTestContext : DbContext
+	public class KrisTestContext : IdentityDbContext
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor)

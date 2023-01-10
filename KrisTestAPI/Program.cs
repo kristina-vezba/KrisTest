@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<KrisTestContext>(options => options
-	.UseNpgsql(builder.Configuration["ConnectionStrings:KrisTestContextConnection"])
+	.UseNpgsql(builder.Configuration.GetConnectionString("KrisTestContextConnection"))
 	.UseSnakeCaseNamingConvention()
 );
 
@@ -21,7 +21,6 @@ var app = builder.Build();
 using ( var scope = app.Services.CreateScope() )
 {
 	var db = scope.ServiceProvider.GetRequiredService<KrisTestContext>();
-	//db.Database.EnsureCreated();
 	var migrationCount = db.Database.GetPendingMigrations;
 	if (migrationCount != null)
 	{
