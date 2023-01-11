@@ -3,6 +3,7 @@ using KrisTest.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,10 @@ namespace KrisTest.Infrastructure.Data
 
 		public DbSet<WebUser> WebUsers { get; set; }
 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.EnableSensitiveDataLogging();
+		}
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -52,8 +57,18 @@ namespace KrisTest.Infrastructure.Data
 		{
 			var modifiedEntries = ChangeTracker.Entries()
 				.Where(x => (x.State == EntityState.Added || x.State == EntityState.Modified));
-			var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			var currentUser = !string.IsNullOrEmpty(userId) ? userId : "Unknown";
+
+			var currentUser = " ";
+
+			if (_httpContextAccessor.HttpContext != null)
+			{
+				 currentUser = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;	
+			}
+
+			else
+			{
+				 currentUser = "Anonymous";
+			}
 
 			foreach (var entry in modifiedEntries)
 			{
