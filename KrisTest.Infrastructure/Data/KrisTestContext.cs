@@ -24,11 +24,15 @@ namespace KrisTest.Infrastructure.Data
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IConfiguration _configuration;
 
-		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+		public KrisTestContext()
+		{
+
+		}
+
+		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor)
 			: base(options)
 		{
 			_httpContextAccessor = httpContextAccessor;
-			this._configuration = configuration;
 		}
 
 		public DbSet<Product> Products { get; set; }
@@ -51,11 +55,10 @@ namespace KrisTest.Infrastructure.Data
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseNpgsql(this._configuration.GetConnectionString("KrisTestContextConnection"),
+				optionsBuilder.UseNpgsql("host=localhost;port=5432;database=kristest;username=smi;password=Power14",
 								options =>
 								{
-									//options.UseNodaTime();
-									AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+									options.UseNodaTime();
 									AssemblyName assemblyName = typeof(KrisTestContext).Assembly.GetName();
 									options.MigrationsAssembly(assemblyName.Name);
 								})
