@@ -1,8 +1,8 @@
 ﻿using KrisTest.Domain.Common;
 using KrisTest.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Graph;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -13,16 +13,22 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NodaTime;
 
 namespace KrisTest.Infrastructure.Data
 {
 	public class KrisTestContext : IdentityDbContext
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
-		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor)
+		private readonly IConfiguration _configuration;
+
+		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
 			: base(options)
 		{
 			_httpContextAccessor = httpContextAccessor;
+			this._configuration = configuration;
 		}
 
 		public DbSet<Product> Products { get; set; }
@@ -43,7 +49,20 @@ namespace KrisTest.Infrastructure.Data
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.EnableSensitiveDataLogging();
+			if (!optionsBuilder.IsConfigured)
+			{
+				optionsBuilder.UseNpgsql(this._configuration.GetConnectionString("KrisTestContextConnection"),
+								options =>
+								{
+									//options.UseNodaTime();
+									AssemblyName assemblyName = typeof(KrisTestContext).Assembly.GetName();
+									options.MigrationsAssembly(assemblyName.Name);
+								})
+							.EnableSensitiveDataLogging()
+							.UseSnakeCaseNamingConvention();
+			}
+
+			base.OnConfiguring(optionsBuilder);
 		}
 
 		protected override void OnModelCreating(ModelBuilder builder)
@@ -62,7 +81,7 @@ namespace KrisTest.Infrastructure.Data
 
 			if (_httpContextAccessor.HttpContext != null)
 			{
-				 currentUser = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;	
+				 currentUser = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 			}
 
 			else
