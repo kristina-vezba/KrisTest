@@ -55,6 +55,7 @@ namespace KrisTest.Infrastructure.Data
 								options =>
 								{
 									//options.UseNodaTime();
+									AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 									AssemblyName assemblyName = typeof(KrisTestContext).Assembly.GetName();
 									options.MigrationsAssembly(assemblyName.Name);
 								})
