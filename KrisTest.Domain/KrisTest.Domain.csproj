@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Graph" Version="4.49.0" />
-    <PackageReference Include="Stripe.net" Version="41.3.0" />
   </ItemGroup>
 
   <ItemGroup>
