@@ -15,7 +15,7 @@ namespace KrisTest.Infrastructure.Data.Configurations
         {
             builder.HasOne(c => c.Account)
                 .WithOne(a => a.Customer)
-                .HasForeignKey<Account>(c => c.Id)
+                .HasForeignKey<Account>(a => a.Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(c => c.WebUser)

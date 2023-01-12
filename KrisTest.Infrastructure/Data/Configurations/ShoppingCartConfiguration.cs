@@ -17,7 +17,15 @@ namespace KrisTest.Infrastructure.Data.Configurations
                 .WithOne(li => li.ShoppingCart)
                 .IsRequired();
 
-            builder.HasOne(sc => sc.WebUser).WithOne(wu => wu.ShoppingCart).HasForeignKey<WebUser>(wu => wu.Id);
+            builder.HasOne(sc => sc.WebUser)
+                .WithOne(wu => wu.ShoppingCart)
+                .HasForeignKey<WebUser>(wu => wu.Id);
+
+            builder.HasOne(sc => sc.Account)
+               .WithOne(a => a.ShoppingCart)
+               .HasForeignKey<Account>(a => a.Id);
+
+            builder.Property(sc => sc.Id).HasColumnName("id").IsRequired();
         }
     }
 }

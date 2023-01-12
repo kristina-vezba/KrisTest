@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 using ( var scope = app.Services.CreateScope() )
 {
 	var db = scope.ServiceProvider.GetRequiredService<KrisTestContext>();
@@ -39,5 +41,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+KrisTestContextSeed.Seed(app);
 
 app.Run();

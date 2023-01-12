@@ -14,6 +14,7 @@ namespace KrisTest.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.Property(p => p.Name).IsRequired();
+
             builder.HasMany(p => p.LineItems)
                 .WithOne(li => li.Product)
                 .IsRequired();

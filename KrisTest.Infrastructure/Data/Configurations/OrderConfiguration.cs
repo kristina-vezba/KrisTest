@@ -18,6 +18,6 @@ namespace KrisTest.Infrastructure.Data.Configurations
             builder.HasMany(o => o.Payments)
                 .WithOne(p => p.Order)
                 .IsRequired();
-        }
+		}
     }
 }

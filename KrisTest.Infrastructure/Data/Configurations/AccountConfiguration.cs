@@ -15,7 +15,6 @@ namespace KrisTest.Infrastructure.Data.Configurations
         {
             builder.HasOne(a => a.ShoppingCart)
                 .WithOne(sc => sc.Account)
-                .HasForeignKey<ShoppingCart>(sc => sc.Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
 			builder.HasMany(a => a.Orders)
