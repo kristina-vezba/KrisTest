@@ -1,5 +1,5 @@
 ﻿using KrisTest.Domain.Common;
-using Stripe;
+using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +12,8 @@ namespace KrisTest.Domain.Entities
     {
         public string BillingAddress { get; set; }
         public bool IsClosed { get; set; }
-        public DateTime Open { get; set; }
-        public DateTime Closed { get; set; }
+        public LocalDateTime Open { get; set; }
+        public LocalDateTime Closed { get; set; }
         public Customer Customer { get; set; }
         public ICollection<Payment>? Payments { get; set; }
         public ShoppingCart ShoppingCart { get; set; }

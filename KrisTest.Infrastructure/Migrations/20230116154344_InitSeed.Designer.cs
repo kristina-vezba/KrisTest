@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -12,14 +13,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KrisTest.Infrastructure.Migrations
 {
     [DbContext(typeof(KrisTestContext))]
-    [Migration("20230110112649_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230116154344_InitSeed")]
+    partial class InitSeed
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -27,24 +29,26 @@ namespace KrisTest.Infrastructure.Migrations
             modelBuilder.Entity("KrisTest.Domain.Entities.Account", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BillingAddress")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("billing_address");
 
-                    b.Property<DateTime>("Closed")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<LocalDateTime>("Closed")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("closed");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -56,12 +60,12 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
-                    b.Property<DateTime>("Open")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<LocalDateTime>("Open")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("open");
 
                     b.Property<Guid>("Uid")
@@ -72,16 +76,49 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_accounts");
 
                     b.ToTable("accounts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BillingAddress = "Ostavi u prodavnici",
+                            Closed = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            IsClosed = false,
+                            Open = new NodaTime.LocalDateTime(2000, 12, 20, 22, 30),
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BillingAddress = "Bilo gde",
+                            Closed = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            IsClosed = false,
+                            Open = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BillingAddress = "Nije vazno",
+                            Closed = new NodaTime.LocalDateTime(2022, 1, 16, 1, 30),
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            IsClosed = true,
+                            Open = new NodaTime.LocalDateTime(2002, 1, 1, 21, 20),
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("AccountId")
+                        .HasColumnType("integer")
+                        .HasColumnName("account_id");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -89,11 +126,10 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnName("address");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -106,7 +142,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -119,10 +155,38 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("uid");
 
+                    b.Property<int>("WebUserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("web_user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_customers");
 
                     b.ToTable("customers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountId = 1,
+                            Address = "Grobljanska 1, Mala Krsna",
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Email = "mojmail@mail.com",
+                            Phone = "0123456789",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            WebUserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccountId = 2,
+                            Address = "Adresa neka, Neko Mesto",
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Email = "mail.mail@opetmail.com",
+                            Phone = "987654321",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            WebUserId = 0
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.LineItem", b =>
@@ -135,11 +199,10 @@ namespace KrisTest.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -147,7 +210,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -188,6 +251,63 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasDatabaseName("ix_line_items_shopping_cart_id");
 
                     b.ToTable("line_items", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            OrderId = 1,
+                            Price = 49.950000000000003,
+                            ProductId = 1,
+                            Quantity = 5,
+                            ShoppingCartId = 1,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            OrderId = 1,
+                            Price = 3.9500000000000002,
+                            ProductId = 2,
+                            Quantity = 10,
+                            ShoppingCartId = 2,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            OrderId = 2,
+                            Price = 0.94999999999999996,
+                            ProductId = 3,
+                            Quantity = 150,
+                            ShoppingCartId = 1,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            OrderId = 2,
+                            Price = 9.9499999999999993,
+                            ProductId = 4,
+                            Quantity = 6,
+                            ShoppingCartId = 2,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            OrderId = 2,
+                            Price = 19.949999999999999,
+                            ProductId = 5,
+                            Quantity = 5,
+                            ShoppingCartId = 1,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Order", b =>
@@ -204,11 +324,10 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnName("account_id");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -216,7 +335,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -226,8 +345,8 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("number");
 
-                    b.Property<DateTime>("Ordered")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<LocalDateTime>("Ordered")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("ordered");
 
                     b.Property<string>("ShipToAddress")
@@ -235,8 +354,8 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ship_to_address");
 
-                    b.Property<DateTime>("Shipped")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<LocalDateTime>("Shipped")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("shipped");
 
                     b.Property<int>("Status")
@@ -258,6 +377,34 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasDatabaseName("ix_orders_account_id");
 
                     b.ToTable("orders", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountId = 1,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Number = "1. order",
+                            Ordered = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            ShipToAddress = "Ostavi kod komsije",
+                            Shipped = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            Status = 0,
+                            Total = 0.0,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccountId = 1,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Number = "2. order",
+                            Ordered = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            ShipToAddress = "Ostavi kod drugog komsije",
+                            Shipped = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
+                            Status = 0,
+                            Total = 0.0,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Payment", b =>
@@ -274,11 +421,10 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnName("account_id");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -291,7 +437,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -299,8 +445,8 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("order_id");
 
-                    b.Property<DateTime>("Paid")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<LocalDateTime>("Paid")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("paid");
 
                     b.Property<double>("Total")
@@ -321,6 +467,19 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasDatabaseName("ix_payments_order_id");
 
                     b.ToTable("payments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountId = 1,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Details = "neke sitnice",
+                            OrderId = 1,
+                            Paid = new NodaTime.LocalDateTime(2023, 1, 16, 0, 0),
+                            Total = 100.0,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Product", b =>
@@ -333,11 +492,10 @@ namespace KrisTest.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -345,7 +503,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -362,6 +520,43 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_products");
 
                     b.ToTable("products", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "Lopata",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "Balon",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "Papir",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "Kamen",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "Makaze",
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.ShoppingCart", b =>
@@ -370,16 +565,19 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<int>("AccountId")
+                        .HasColumnType("integer")
+                        .HasColumnName("account_id");
+
+                    b.Property<LocalDateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -387,7 +585,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -395,24 +593,50 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("uid");
 
+                    b.Property<int>("WebUserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("web_user_id");
+
                     b.HasKey("Id")
                         .HasName("pk_shopping_carts");
 
                     b.ToTable("shopping_carts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountId = 1,
+                            Created = new NodaTime.LocalDateTime(2000, 2, 2, 2, 30),
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            WebUserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccountId = 3,
+                            Created = new NodaTime.LocalDateTime(2012, 8, 21, 1, 0),
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            WebUserId = 2
+                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.WebUser", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("id");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<Instant>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -420,7 +644,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<Instant?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -446,262 +670,47 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_web_users");
 
                     b.ToTable("web_users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "UserOne",
+                            Password = "IsPassword",
+                            State = 1,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
+                            Name = "UserTwo",
+                            Password = "JopetPassword",
+                            State = 1,
+                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("KrisTest.Domain.Entities.Customer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text")
-                        .HasColumnName("id");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text")
-                        .HasColumnName("concurrency_stamp");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("normalized_name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_roles");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_type");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_value");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_role_claims");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_role_claims_role_id");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text")
-                        .HasColumnName("id");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer")
-                        .HasColumnName("access_failed_count");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text")
-                        .HasColumnName("concurrency_stamp");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("email");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean")
-                        .HasColumnName("email_confirmed");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean")
-                        .HasColumnName("lockout_enabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("lockout_end");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("normalized_email");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("normalized_user_name");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text")
-                        .HasColumnName("password_hash");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text")
-                        .HasColumnName("phone_number");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean")
-                        .HasColumnName("phone_number_confirmed");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text")
-                        .HasColumnName("security_stamp");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean")
-                        .HasColumnName("two_factor_enabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
-                        .HasColumnName("user_name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_users");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_type");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text")
-                        .HasColumnName("claim_value");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_asp_net_user_claims");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_claims_user_id");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text")
-                        .HasColumnName("provider_key");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text")
-                        .HasColumnName("provider_display_name");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("LoginProvider", "ProviderKey")
-                        .HasName("pk_asp_net_user_logins");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_asp_net_user_logins_user_id");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("UserId", "RoleId")
-                        .HasName("pk_asp_net_user_roles");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_asp_net_user_roles_role_id");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text")
-                        .HasColumnName("value");
-
-                    b.HasKey("UserId", "LoginProvider", "Name")
-                        .HasName("pk_asp_net_user_tokens");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("KrisTest.Domain.Entities.Account", b =>
-                {
-                    b.HasOne("KrisTest.Domain.Entities.Customer", "Customer")
-                        .WithOne("Account")
-                        .HasForeignKey("KrisTest.Domain.Entities.Account", "Id")
+                    b.HasOne("KrisTest.Domain.Entities.Account", "Account")
+                        .WithOne("Customer")
+                        .HasForeignKey("KrisTest.Domain.Entities.Customer", "Id")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired()
-                        .HasConstraintName("fk_accounts_customers_customer_id");
+                        .HasConstraintName("fk_customers_accounts_account_id");
 
-                    b.Navigation("Customer");
+                    b.HasOne("KrisTest.Domain.Entities.WebUser", "WebUser")
+                        .WithOne("Customer")
+                        .HasForeignKey("KrisTest.Domain.Entities.Customer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_customers_web_users_web_user_id");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("WebUser");
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.LineItem", b =>
@@ -774,105 +783,31 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasForeignKey("KrisTest.Domain.Entities.ShoppingCart", "Id")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired()
-                        .HasConstraintName("fk_shopping_carts_accounts_id");
+                        .HasConstraintName("fk_shopping_carts_accounts_account_id");
 
                     b.HasOne("KrisTest.Domain.Entities.WebUser", "WebUser")
                         .WithOne("ShoppingCart")
                         .HasForeignKey("KrisTest.Domain.Entities.ShoppingCart", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_shopping_carts_web_users_id");
+                        .HasConstraintName("fk_shopping_carts_web_users_web_user_id");
 
                     b.Navigation("Account");
 
                     b.Navigation("WebUser");
                 });
 
-            modelBuilder.Entity("KrisTest.Domain.Entities.WebUser", b =>
-                {
-                    b.HasOne("KrisTest.Domain.Entities.Customer", "Customer")
-                        .WithOne("WebUser")
-                        .HasForeignKey("KrisTest.Domain.Entities.WebUser", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_web_users_customers_id");
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_role_claims_asp_net_roles_role_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_claims_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_logins_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_roles_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
-                });
-
             modelBuilder.Entity("KrisTest.Domain.Entities.Account", b =>
                 {
+                    b.Navigation("Customer")
+                        .IsRequired();
+
                     b.Navigation("Orders");
 
                     b.Navigation("Payments");
 
                     b.Navigation("ShoppingCart")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("KrisTest.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("Account")
-                        .IsRequired();
-
-                    b.Navigation("WebUser");
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Order", b =>
@@ -894,6 +829,9 @@ namespace KrisTest.Infrastructure.Migrations
 
             modelBuilder.Entity("KrisTest.Domain.Entities.WebUser", b =>
                 {
+                    b.Navigation("Customer")
+                        .IsRequired();
+
                     b.Navigation("ShoppingCart");
                 });
 #pragma warning restore 612, 618

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NodaTime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,9 @@ namespace KrisTest.Domain.Common
     {
         public int Id { get; set; }
         public Guid Uid { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        public Instant CreatedDate { get; set; }
+        public string? CreatedBy { get; set; }
+        public Instant? ModifiedDate { get; set; }
         public string? ModifiedBy { get; set; }
 
     }

@@ -1,6 +1,5 @@
 ﻿using KrisTest.Domain.Common;
 using Microsoft.Graph;
-using Stripe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +16,8 @@ namespace KrisTest.Domain.Entities
         public string Phone { get; set; }
         public string Email { get; set; }
         public Account Account { get; set; }
+        public int AccountId { get; set; }
         public WebUser? WebUser { get; set; }
-
+        public int WebUserId { get; set; }
     }
 }

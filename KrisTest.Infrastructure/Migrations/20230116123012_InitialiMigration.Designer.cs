@@ -3,8 +3,8 @@ using System;
 using KrisTest.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -12,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KrisTest.Infrastructure.Migrations
 {
     [DbContext(typeof(KrisTestContext))]
-    partial class KrisTestContextModelSnapshot : ModelSnapshot
+    [Migration("20230116123012_InitialiMigration")]
+    partial class InitialiMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,15 +39,15 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("billing_address");
 
-                    b.Property<LocalDateTime>("Closed")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("Closed")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("closed");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -57,12 +59,12 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
-                    b.Property<LocalDateTime>("Open")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("Open")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("open");
 
                     b.Property<Guid>("Uid")
@@ -73,38 +75,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_accounts");
 
                     b.ToTable("accounts", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BillingAddress = "Ostavi u prodavnici",
-                            Closed = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            IsClosed = false,
-                            Open = new NodaTime.LocalDateTime(2000, 12, 20, 22, 30),
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BillingAddress = "Bilo gde",
-                            Closed = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            IsClosed = false,
-                            Open = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BillingAddress = "Nije vazno",
-                            Closed = new NodaTime.LocalDateTime(2022, 1, 16, 1, 30),
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            IsClosed = true,
-                            Open = new NodaTime.LocalDateTime(2002, 1, 1, 21, 20),
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Customer", b =>
@@ -126,7 +96,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -139,7 +109,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -160,30 +130,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_customers");
 
                     b.ToTable("customers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountId = 1,
-                            Address = "Grobljanska 1, Mala Krsna",
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Email = "mojmail@mail.com",
-                            Phone = "0123456789",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            WebUserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccountId = 2,
-                            Address = "Adresa neka, Neko Mesto",
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Email = "mail.mail@opetmail.com",
-                            Phone = "987654321",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            WebUserId = 0
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.LineItem", b =>
@@ -199,7 +145,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -207,7 +153,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -248,63 +194,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasDatabaseName("ix_line_items_shopping_cart_id");
 
                     b.ToTable("line_items", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            OrderId = 1,
-                            Price = 49.950000000000003,
-                            ProductId = 1,
-                            Quantity = 5,
-                            ShoppingCartId = 1,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            OrderId = 1,
-                            Price = 3.9500000000000002,
-                            ProductId = 2,
-                            Quantity = 10,
-                            ShoppingCartId = 2,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            OrderId = 2,
-                            Price = 0.94999999999999996,
-                            ProductId = 3,
-                            Quantity = 150,
-                            ShoppingCartId = 1,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            OrderId = 2,
-                            Price = 9.9499999999999993,
-                            ProductId = 4,
-                            Quantity = 6,
-                            ShoppingCartId = 2,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            OrderId = 2,
-                            Price = 19.949999999999999,
-                            ProductId = 5,
-                            Quantity = 5,
-                            ShoppingCartId = 1,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Order", b =>
@@ -324,7 +213,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -332,7 +221,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -342,8 +231,8 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("number");
 
-                    b.Property<LocalDateTime>("Ordered")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("Ordered")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("ordered");
 
                     b.Property<string>("ShipToAddress")
@@ -351,8 +240,8 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ship_to_address");
 
-                    b.Property<LocalDateTime>("Shipped")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("Shipped")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("shipped");
 
                     b.Property<int>("Status")
@@ -374,34 +263,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasDatabaseName("ix_orders_account_id");
 
                     b.ToTable("orders", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountId = 1,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Number = "1. order",
-                            Ordered = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            ShipToAddress = "Ostavi kod komsije",
-                            Shipped = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            Status = 0,
-                            Total = 0.0,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccountId = 1,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Number = "2. order",
-                            Ordered = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            ShipToAddress = "Ostavi kod drugog komsije",
-                            Shipped = new NodaTime.LocalDateTime(1, 1, 1, 0, 0),
-                            Status = 0,
-                            Total = 0.0,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Payment", b =>
@@ -421,7 +282,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -434,7 +295,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -442,8 +303,8 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("order_id");
 
-                    b.Property<LocalDateTime>("Paid")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("Paid")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("paid");
 
                     b.Property<double>("Total")
@@ -464,19 +325,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasDatabaseName("ix_payments_order_id");
 
                     b.ToTable("payments", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountId = 1,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Details = "neke sitnice",
-                            OrderId = 1,
-                            Paid = new NodaTime.LocalDateTime(2023, 1, 16, 0, 0),
-                            Total = 100.0,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Product", b =>
@@ -492,7 +340,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -500,7 +348,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -517,43 +365,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_products");
 
                     b.ToTable("products", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "Lopata",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "Balon",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "Papir",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "Kamen",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "Makaze",
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.ShoppingCart", b =>
@@ -566,15 +377,15 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("account_id");
 
-                    b.Property<LocalDateTime>("Created")
-                        .HasColumnType("timestamp without time zone")
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -582,7 +393,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -598,26 +409,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_shopping_carts");
 
                     b.ToTable("shopping_carts", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountId = 1,
-                            Created = new NodaTime.LocalDateTime(2000, 2, 2, 2, 30),
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            WebUserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccountId = 3,
-                            Created = new NodaTime.LocalDateTime(2012, 8, 21, 1, 0),
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            WebUserId = 2
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.WebUser", b =>
@@ -633,7 +424,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<Instant>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
 
@@ -641,7 +432,7 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("modified_by");
 
-                    b.Property<Instant?>("ModifiedDate")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modified_date");
 
@@ -667,26 +458,6 @@ namespace KrisTest.Infrastructure.Migrations
                         .HasName("pk_web_users");
 
                     b.ToTable("web_users", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "UserOne",
-                            Password = "IsPassword",
-                            State = 1,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedDate = NodaTime.Instant.FromUnixTimeTicks(0L),
-                            Name = "UserTwo",
-                            Password = "JopetPassword",
-                            State = 1,
-                            Uid = new Guid("00000000-0000-0000-0000-000000000000")
-                        });
                 });
 
             modelBuilder.Entity("KrisTest.Domain.Entities.Customer", b =>

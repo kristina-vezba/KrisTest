@@ -15,12 +15,12 @@ namespace KrisTest.Infrastructure.Data.Configurations
         {
             builder.HasOne(c => c.Account)
                 .WithOne(a => a.Customer)
-                .HasForeignKey<Account>(a => a.Id)
+                .HasForeignKey<Customer>(a => a.Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(c => c.WebUser)
                 .WithOne(wu => wu.Customer)
-                .HasForeignKey<WebUser>(wu => wu.Id);
+                .HasForeignKey<Customer>(wu => wu.Id);
 		}
     }
 }

@@ -13,22 +13,29 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NodaTime;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Operations;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace KrisTest.Infrastructure.Data
 {
-	public class KrisTestContext : IdentityDbContext
+	public class KrisTestContext : DbContext
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IConfiguration _configuration;
 
-		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+		public KrisTestContext()  
+		{
+			
+		}
+
+		public KrisTestContext(DbContextOptions<KrisTestContext> options, IHttpContextAccessor httpContextAccessor)
 			: base(options)
 		{
 			_httpContextAccessor = httpContextAccessor;
-			this._configuration = configuration;
+			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 		}
 
 		public DbSet<Product> Products { get; set; }
@@ -51,11 +58,10 @@ namespace KrisTest.Infrastructure.Data
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseNpgsql(this._configuration.GetConnectionString("KrisTestContextConnection"),
+				optionsBuilder.UseNpgsql("Server=localhost;Username=postgres;Password=postgre;database=KrisTest;Integrated Security=True;",
 								options =>
 								{
-									//options.UseNodaTime();
-									AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+									options.UseNodaTime();
 									AssemblyName assemblyName = typeof(KrisTestContext).Assembly.GetName();
 									options.MigrationsAssembly(assemblyName.Name);
 								})
@@ -67,10 +73,11 @@ namespace KrisTest.Infrastructure.Data
 		}
 
 		protected override void OnModelCreating(ModelBuilder builder)
-		{
+		{	
 			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+			KrisTestContextSeed.Seed(builder);
 			base.OnModelCreating(builder);
+	
 		}
 
 		public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -78,7 +85,7 @@ namespace KrisTest.Infrastructure.Data
 			var modifiedEntries = ChangeTracker.Entries()
 				.Where(x => (x.State == EntityState.Added || x.State == EntityState.Modified));
 
-			var currentUser = " ";
+			var currentUser = string.Empty;
 
 			if (_httpContextAccessor.HttpContext != null)
 			{
@@ -98,11 +105,11 @@ namespace KrisTest.Infrastructure.Data
 				{
 					if (entry.State == EntityState.Added)
 					{
-						entity.CreatedDate = DateTime.UtcNow;
+						entity.CreatedDate = Instant.MaxValue;
 						entity.CreatedBy = currentUser;
 					}
 
-					entity.ModifiedDate = DateTime.UtcNow;
+					entity.ModifiedDate = Instant.MaxValue;
 					entity.ModifiedBy = currentUser;
 				}
 			}
