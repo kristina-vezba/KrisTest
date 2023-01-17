@@ -6,7 +6,7 @@ namespace KrisTest.UI.Models
 	{
 		[Required]
 		[Display(Name = "Username")]
-		public string Username { get; set; }
+		public string Name { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]

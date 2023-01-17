@@ -1,6 +1,4 @@
-﻿
-
-
+﻿@model LoginViewModel
 
 		
 <div class="flex-1">
@@ -11,17 +9,15 @@
 	<div class="mt-8">
 		<form action="#">
 			<div>
-				<label for="username" class="mb-2 text-sm">Username</label>
-				<input type="text" name="username" id="username" placeholder="Your Username" class="text-center px-4 py-2 mt-2" />
+				<label asp-for="Name" class="mb-2 text-sm">Username</label>
+				<input asp-for="Name" placeholder="Your Username" class="form-control text-center px-4 py-2 mt-2" />
 			</div>
 			<div class="mt-6">
-				<div class="flex justify-between mb-2">
-					<label for="password" class="text-sm">Password</label>
-					<input type="password" name="password" id="password" placeholder="Your Password" class="text-center px-4 py-2 mt-2" />
-				</div><br />
-				<div class="mt-6">
-					<input type="submit" class="px-4 py-2"></input>
-				</div>
+				<label asp-for="Password" class="text-sm">Password</label>
+				<input asp-for="Password" placeholder="Your Password" class="form-control text-center px-4 py-2 mt-2" /><br />
+			</div>
+			<div class="mt-6">
+				<input type="submit" value="Submit" class="px-4 py-2"></input>
 			</div>
 		</form>
 		<div class="align-bottom"><br /><br />
