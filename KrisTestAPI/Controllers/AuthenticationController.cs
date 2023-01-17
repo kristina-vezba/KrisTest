@@ -1,4 +1,5 @@
 ﻿using KrisTest.Domain.Entities;
+using KrisTest.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,7 @@ namespace KrisTestAPI.Controllers
 	public class AuthenticationController : ControllerBase
 	{
 		private readonly IConfiguration _configuration;
+		private readonly KrisTestContext _context;
 
 		public class AuthenticationRequestBody
 		{
@@ -23,9 +25,10 @@ namespace KrisTestAPI.Controllers
 			public string? Password { get; set; }
 		}
 
-		public AuthenticationController(IConfiguration configuration)
+		public AuthenticationController(IConfiguration configuration, KrisTestContext context)
 		{
 			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+			_context = context ?? throw new ArgumentNullException(nameof(context));
 		}
 
 		[HttpPost("authenticate")]
