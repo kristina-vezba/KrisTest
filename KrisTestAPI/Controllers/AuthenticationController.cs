@@ -1,5 +1,8 @@
-﻿using KrisTest.Domain.Entities;
+﻿
+using KrisTest.Application.DTO;
+using KrisTest.Application.Interfaces;
 using KrisTest.Infrastructure.Data;
+using KrisTestAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +11,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using static KrisTestAPI.Controllers.AuthenticationController;
+
 
 namespace KrisTestAPI.Controllers
 {
@@ -19,24 +22,17 @@ namespace KrisTestAPI.Controllers
 		private readonly IConfiguration _configuration;
 		private readonly KrisTestContext _context;
 
-		public class AuthenticationRequestBody
-		{
-			public string? UserName { get; set; }
-			public string? Password { get; set; }
-		}
-
 		public AuthenticationController(IConfiguration configuration, KrisTestContext context)
 		{
 			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-			_context = context ?? throw new ArgumentNullException(nameof(context));
+			_context = context ?? throw new ArgumentNullException();
 		}
 
-		[HttpPost("authenticate")]
-		public ActionResult<string> Authenticate(AuthenticationRequestBody authenticateRequestBody)
+		[HttpPost]
+		public IActionResult Authenticate(AuthenticationRequest authenticateRequest)
 		{
-			var user = ValidateUserCredentials(
-				authenticateRequestBody.UserName,
-				authenticateRequestBody.Password);
+			var user = _context.WebUsers.FirstOrDefault(u => u.Name == authenticateRequest.Username && 
+					u.Password == authenticateRequest.Password);
 
 			if (user == null)
 			{
@@ -49,8 +45,8 @@ namespace KrisTestAPI.Controllers
 				securityKey, SecurityAlgorithms.HmacSha256);
 
 			var claimsForToken = new List<Claim>();
-			claimsForToken.Add(new Claim("sub", user.Id.ToString()));
-			claimsForToken.Add(new Claim("name", user.Name));
+			claimsForToken.Add(new Claim("sub", user.Name));
+			claimsForToken.Add(new Claim("name", user.Password));
 
 			var jwtSecurityToken = new JwtSecurityToken(
 				_configuration["Authentication:Issuer"],
@@ -61,13 +57,15 @@ namespace KrisTestAPI.Controllers
 				signingCredentials);
 
 			var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+			var authenticateResponse = new AuthenticateResponse
+			{
+				Token = tokenToReturn,
+				Id = user.Id,
+				Username = user.Name,
+				Password = user.Password
+			};
 
-			return Ok(tokenToReturn);
-		}
-
-		private WebUser ValidateUserCredentials(string? userName, string? password)
-		{
-			return new WebUser();
+			return Ok(authenticateResponse);
 		}
 	}
 }

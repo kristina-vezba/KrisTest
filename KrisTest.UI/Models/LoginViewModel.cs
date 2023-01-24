@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KrisTest.Application.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace KrisTest.UI.Models
 {
@@ -6,11 +7,12 @@ namespace KrisTest.UI.Models
 	{
 		[Required]
 		[Display(Name = "Username")]
-		public string Name { get; set; }
+		public string Username { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
+
 	}
 }

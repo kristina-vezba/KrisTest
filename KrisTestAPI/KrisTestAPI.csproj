@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KrisTest.Application\KrisTest.Application.csproj" />
+    <ProjectReference Include="..\KrisTest.Infrastructure\KrisTest.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

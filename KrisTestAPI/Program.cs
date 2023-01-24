@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+
 builder.Services.AddDbContext<KrisTestContext>(options =>
 {
 	options.UseNpgsql(builder.Configuration.GetConnectionString("KrisTestContextConnection"), opt =>
@@ -23,6 +24,8 @@ builder.Services.AddDbContext<KrisTestContext>(options =>
 	options.UseSnakeCaseNamingConvention();
 });
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -31,7 +34,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication("Bearer")
 	.AddJwtBearer(options =>
 	{
-		options.TokenValidationParameters = new()
+		options.TokenValidationParameters = new TokenValidationParameters
 		{
 			ValidateIssuer = true,
 			ValidateAudience = true,
