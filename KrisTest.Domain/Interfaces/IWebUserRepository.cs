@@ -14,6 +14,5 @@ namespace KrisTest.Domain.Interfaces
 		void CreateUser(WebUser user);
 		void UpdateUser(WebUser user);
 		void DeleteUser(WebUser user);
-		void CreateUser();
 	}
 }

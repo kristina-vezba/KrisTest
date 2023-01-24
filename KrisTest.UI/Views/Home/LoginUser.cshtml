@@ -1,29 +1,31 @@
 ﻿@model UserModel
-
+<div class="bg-user">
 <h2>User Details</h2>
+<hr /><br />
 
 <h4>User Id: @Model.Id</h4>
-<hr />
-<div class="row">
+<br />
+<div class="row" >
     <div class="col-md-6">
-        <form asp-controller="Home" asp-action="Login" method="post">
+        <form asp-controller="Home" asp-action="LoginUser" method="post">
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
-            </div>
+            </div><br />
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
-            </div>
+            </div><br />
             <div class="form-group">
                 <label asp-for="Token" class="control-label"></label>
                 <input asp-for="Token" class="form-control" />
             </div>
         </form>
     </div>
-</div>
+</div><br />
 <div>
     <br />
     <a asp-action="Index">Back to Home page</a>
+</div>
 </div>
 

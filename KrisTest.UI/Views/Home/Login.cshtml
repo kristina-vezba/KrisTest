@@ -1,46 +1,13 @@
-﻿
-@model UserModel
-
-<h2>User Details</h2>
-<hr />
-
-<h4>User Id: @Model.Id</h4>
-<br />
-<div class="row">
-	<div class="col-md-6">
-		<form asp-controller="Home" asp-action="Login" method="post">
-			<div class="form-group">
-				<label asp-for="Username" class="control-label"></label>
-				<input asp-for="Username" class="form-control" />
-			</div><br />
-			<div class="form-group">
-				<label asp-for="Password" class="control-label"></label>
-				<input asp-for="Password" class="form-control" />
-			</div><br />
-			<div class="form-group">
-				<label asp-for="Token" class="control-label"></label>
-				<input asp-for="Token" class="form-control" />
-			</div>
-		</form>
-	</div>
-</div><br />
-<div>
-	<br />
-	<a asp-action="Index">Back to Home page</a>
-</div>
-
-
-
-@*@model LoginViewModel
+﻿@model LoginViewModel
 
 
 <div class="flex-1">
-	<div class="text-center">
+	<div class="text-center mb-5">
 		<h2>Login Page</h2>
 		<p>Log in to access your account</p>
 	</div>
 	<div class="mt-8 col-4">
-		<form method="post">
+		<form asp-controller="Home" asp-action="LoginUser" method="post">
 			<div>
 				<label asp-for="Username" class="mb-2 text-sm">Username</label>
 				<input asp-for="Username" placeholder="Your Username" class="form-control text-center px-4 py-2 mt-2" />
@@ -54,8 +21,8 @@
 			</div><br />
 		</form>
 	</div><br />
-	<div class="align-bottom"><br /><br />
+	<div class="align-bottom mt-5"><br /><br />
 		<p class="mt-6 text-sm text-center">Don't have an account yet?
 			<a href="/register" class="text-blue">Sign up</a>.</p>
 	</div>
-</div>*@
+</div>

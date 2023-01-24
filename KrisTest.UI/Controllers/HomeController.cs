@@ -34,8 +34,13 @@ namespace KrisTest.UI.Controllers
 			return View();
 		}
 
+		public IActionResult Login()
+		{
+			return View();
+		}
+
 		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel model)
+		public async Task<IActionResult> LoginUser(LoginViewModel model)
 		{
 			var body = JsonConvert.SerializeObject(model);
 			var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
@@ -53,9 +58,6 @@ namespace KrisTest.UI.Controllers
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 
-		//public IActionResult Login()
-		//{
-		//	return View();
-		//}
+		
 	}
 }
