@@ -39,24 +39,13 @@ namespace KrisTestAPI.Controllers
 				return Unauthorized();
 			}
 
-			var securityKey = new SymmetricSecurityKey(
-				Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]));
-			var signingCredentials = new SigningCredentials(
-				securityKey, SecurityAlgorithms.HmacSha256);
-
 			var claimsForToken = new List<Claim>();
 			claimsForToken.Add(new Claim("sub", user.Name));
 			claimsForToken.Add(new Claim("name", user.Password));
+			
+			var token = GetToken(claimsForToken);
+			var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(token);
 
-			var jwtSecurityToken = new JwtSecurityToken(
-				_configuration["Authentication:Issuer"],
-				_configuration["Authentication:Audience"],
-				claimsForToken,
-				DateTime.UtcNow,
-				DateTime.UtcNow.AddHours(1),
-				signingCredentials);
-
-			var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 			var authenticateResponse = new AuthenticateResponse
 			{
 				Token = tokenToReturn,
@@ -66,6 +55,24 @@ namespace KrisTestAPI.Controllers
 			};
 
 			return Ok(authenticateResponse);
+		}
+
+		private JwtSecurityToken GetToken(List<Claim> claimsForToken)
+		{
+			var securityKey = new SymmetricSecurityKey(
+				Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]));
+			var signingCredentials = new SigningCredentials(
+				securityKey, SecurityAlgorithms.HmacSha256);
+
+			var jwtSecurityToken = new JwtSecurityToken(
+				_configuration["Authentication:Issuer"],
+				_configuration["Authentication:Audience"],
+				claimsForToken,
+				DateTime.UtcNow,
+				DateTime.UtcNow.AddHours(1),
+				signingCredentials);
+
+			return jwtSecurityToken;
 		}
 	}
 }
