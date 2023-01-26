@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace KrisTest.Domain.Interfaces
 {
-	public interface IWebUserRepository
+	public interface IWebUserRepository : IGenericRepository<WebUser>
 	{
-		WebUser? GetUserById(int id);
-		IEnumerable<WebUser> GetAllUsers();
-		void CreateUser(WebUser user);
-		void UpdateUser(WebUser user);
-		void DeleteUser(WebUser user);
+		WebUser GetWebUser(string username, string password);
 	}
 }

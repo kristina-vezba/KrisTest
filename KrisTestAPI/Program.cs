@@ -1,6 +1,10 @@
 using System.Reflection;
 using System.Text;
+using KrisTest.Application.Interfaces;
+using KrisTest.Application.Services;
+using KrisTest.Domain.Interfaces;
 using KrisTest.Infrastructure.Data;
+using KrisTest.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NodaTime;
@@ -23,6 +27,11 @@ builder.Services.AddDbContext<KrisTestContext>(options =>
 			.EnableSensitiveDataLogging();
 	options.UseSnakeCaseNamingConvention();
 });
+
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IWebUserRepository, WebUserRepository>();
+builder.Services.AddScoped<IWebUserService, WebUserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddHttpClient();
 

@@ -19,60 +19,36 @@ namespace KrisTestAPI.Controllers
 	[ApiController]
 	public class AuthenticationController : ControllerBase
 	{
-		private readonly IConfiguration _configuration;
-		private readonly KrisTestContext _context;
+		private readonly IWebUserService _webUserService;
+		private readonly ITokenService _tokenService;
 
-		public AuthenticationController(IConfiguration configuration, KrisTestContext context)
+		public AuthenticationController(IWebUserService webUserService, ITokenService tokenService)
 		{
-			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-			_context = context ?? throw new ArgumentNullException();
+			_webUserService = webUserService ?? throw new ArgumentNullException();
+			_tokenService = tokenService ?? throw new ArgumentNullException();
 		}
 
 		[HttpPost]
 		public IActionResult Authenticate(AuthenticationRequest authenticateRequest)
 		{
-			var user = _context.WebUsers.FirstOrDefault(u => u.Name == authenticateRequest.Username && 
-					u.Password == authenticateRequest.Password);
+			var user = _webUserService.ValidateCredentials(authenticateRequest.Username, authenticateRequest.Password);
 
 			if (user == null)
 			{
 				return Unauthorized();
 			}
 
-			var claimsForToken = new List<Claim>();
-			claimsForToken.Add(new Claim("sub", user.Name));
-			claimsForToken.Add(new Claim("name", user.Password));
-			
-			var token = GetToken(claimsForToken);
-			var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(token);
+			var token = _tokenService.CreateToken(user);
 
 			var authenticateResponse = new AuthenticateResponse
 			{
-				Token = tokenToReturn,
-				Id = user.Id,
-				Username = user.Name,
-				Password = user.Password
+				Token = token,
+				Id = user.User.Id,
+				Username = user.User.Name,
+				Password = user.User.Password
 			};
 
 			return Ok(authenticateResponse);
-		}
-
-		private JwtSecurityToken GetToken(List<Claim> claimsForToken)
-		{
-			var securityKey = new SymmetricSecurityKey(
-				Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]));
-			var signingCredentials = new SigningCredentials(
-				securityKey, SecurityAlgorithms.HmacSha256);
-
-			var jwtSecurityToken = new JwtSecurityToken(
-				_configuration["Authentication:Issuer"],
-				_configuration["Authentication:Audience"],
-				claimsForToken,
-				DateTime.UtcNow,
-				DateTime.UtcNow.AddHours(1),
-				signingCredentials);
-
-			return jwtSecurityToken;
 		}
 	}
 }
